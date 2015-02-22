@@ -38,40 +38,44 @@
 
 namespace util{
 
-	//! ‰æ‘œ‚©‚ç‚Í‚İo‚é‹éŒ`‚Ì®Œ`
+	//! ï¿½æ‘œï¿½ï¿½ï¿½ï¿½Í‚İoï¿½ï¿½ï¿½`ï¿½Ìï¿½ï¿½`
 	cv::Rect TruncateRect(const cv::Rect& obj_rect, const cv::Size& img_size);
 
-	//! ‰æ‘œ‚©‚ç‚Í‚İo‚é‹éŒ`‚ğ’†S‚ğˆÛ‚µ‚È‚ª‚ç®Œ`
+	//! ï¿½æ‘œï¿½ï¿½ï¿½ï¿½Í‚İoï¿½ï¿½ï¿½`ï¿½ğ’†Sï¿½ï¿½ï¿½Ûï¿½ï¿½ï¿½ï¿½È‚ï¿½ï¿½ç®ï¿½`
 	cv::Rect TruncateRectKeepCenter(const cv::Rect& obj_rect, const cv::Size& max_size);
 
-	//! ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+	//! ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ì“Ç‚İï¿½ï¿½ï¿½
 	/*!
-	opencv_createsamles.exe‚Æ“¯Œ`®‚ÌƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹“Ç‚İ‘‚«
-	ReadCsvFile()ŠÖ”•K{
-	\param[in] gt_file ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹–¼
-	\param[out] imgpathlist ‰æ‘œƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX
-	\param[out] rectlist Še‰æ‘œ‚É‚Â‚¯‚ç‚ê‚½ƒAƒmƒe[ƒVƒ‡ƒ“‚ÌƒŠƒXƒg
-	\return “Ç‚İ‚İ‚Ì¬”Û
+	opencv_createsamles.exeï¿½Æ“ï¿½ï¿½`ï¿½ï¿½ï¿½ÌƒAï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
+	ReadCsvFile()ï¿½Öï¿½ï¿½Kï¿½{
+	\param[in] gt_file ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½
+	\param[out] imgpathlist ï¿½æ‘œï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö‚Ìƒpï¿½X
+	\param[out] rectlist ï¿½eï¿½æ‘œï¿½É‚Â‚ï¿½ï¿½ï¿½ê‚½ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½g
+	\return ï¿½Ç‚İï¿½ï¿½İ‚Ìï¿½ï¿½ï¿½
 	*/
-	bool LoadAnnotationFile(const std::string& gt_file, std::vector<std::string>& imgpathlist, std::vector<std::vector<cv::Rect>>& rectlist);
+	bool LoadAnnotationFile(std::string gt_file,
+			std::vector<std::string>& imgpathlist,
+			std::vector<std::vector<cv::Rect> >& rectlist);
 
-	//! ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚Ö’Ç‹L
+	//! ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö’Ç‹L
 	/*!
-	opencv_createsamles.exe‚Æ“¯Œ`®‚ÌƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹“Ç‚İ‘‚«
-	\param[in] anno_file ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹–¼
-	\param[in] img_file ‰æ‘œƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX
-	\param[int] obj_rects Še‰æ‘œ‚É‚Â‚¯‚ç‚ê‚½ƒAƒmƒe[ƒVƒ‡ƒ“‚ÌƒŠƒXƒg
-	\return •Û‘¶‚Ì¬”Û
+	opencv_createsamles.exeï¿½Æ“ï¿½ï¿½`ï¿½ï¿½ï¿½ÌƒAï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
+	\param[in] anno_file ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½
+	\param[in] img_file ï¿½æ‘œï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö‚Ìƒpï¿½X
+	\param[int] obj_rects ï¿½eï¿½æ‘œï¿½É‚Â‚ï¿½ï¿½ï¿½ê‚½ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½g
+	\return ï¿½Û‘ï¿½ï¿½Ìï¿½ï¿½ï¿½
 	*/
-	bool AddAnnotationLine(const std::string& anno_file, const std::string& img_file, const std::vector<cv::Rect>& obj_rects, const std::string& sep);
+	bool AddAnnotationLine(const std::string anno_file,
+			const std::string& img_file, const std::vector<cv::Rect>& obj_rects, const std::string& sep);
 
-	// ƒfƒBƒŒƒNƒgƒŠ‚©‚ç‰æ‘œƒtƒ@ƒCƒ‹–¼ˆê——‚ğæ“¾
+	// ï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‘œï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ê——ï¿½ï¿½ï¿½æ“¾
 	bool ReadImageFilesInDirectory(const std::string& img_dir, std::vector<std::string>& image_lists);
 
 	bool hasImageExtention(const std::string& filename);
 
-	bool ReadCSVFile(const std::string& input_file, std::vector<std::vector<std::string>>& output_strings,
-		const std::vector<std::string>& separater_vec = std::vector<std::string>());;
+	bool ReadCSVFile(const std::string input_file,
+			std::vector<std::vector<std::string> > & output_strings,
+		  const std::vector<std::string>& separater_vec = std::vector<std::string>());;
 
 	std::vector<std::string> TokenizeString(const std::string& input_string, const std::vector<std::string>& separater_vec);
 }

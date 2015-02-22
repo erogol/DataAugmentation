@@ -1,7 +1,7 @@
 generate_num = 5
-yaw_sigma = 0
-pitch_sigma = 0
-roll_sigma = 0
+yaw_sigma = 10
+pitch_sigma = 10
+roll_sigma = 10
 blur_max_sigma = 0
 noise_max_sigma = 50.0 
 x_slide_sigma = 0.0

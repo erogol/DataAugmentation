@@ -32,13 +32,15 @@
 //M*/
 
 #include "Util.h"
+#include <iostream>
 #include <fstream>
 #include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 
+using namespace std;
 namespace util{
 	
-	//! ‚Í‚İo‚é—Ìˆæ‚ğƒJƒbƒg
+	//! ï¿½Í‚İoï¿½ï¿½Ìˆï¿½ï¿½ï¿½Jï¿½bï¿½g
 	cv::Rect TruncateRect(const cv::Rect& obj_rect, const cv::Size& img_size)
 	{
 		cv::Rect resize_rect = obj_rect;
@@ -61,7 +63,7 @@ namespace util{
 	}
 
 
-	//! ’†S‚ğ“®‚©‚³‚¸‚ÉA‚Í‚İo‚é—Ìˆæ‚ğƒJƒbƒg
+	//! ï¿½ï¿½ï¿½Sï¿½ğ“®‚ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ÉAï¿½Í‚İoï¿½ï¿½Ìˆï¿½ï¿½ï¿½Jï¿½bï¿½g
 	cv::Rect TruncateRectKeepCenter(const cv::Rect& obj_rect, const cv::Size& max_size)
 	{
 		cv::Rect exp_rect = obj_rect;
@@ -85,24 +87,25 @@ namespace util{
 	}
 
 
-	//! ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ
+	//! ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ì“Ç‚İï¿½ï¿½ï¿½
 	/*!
-	opencv_createsamles.exe‚Æ“¯Œ`®‚ÌƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹“Ç‚İ‘‚«
-	ReadCsvFile()ŠÖ”•K{
-	\param[in] gt_file ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹–¼
-	\param[out] imgpathlist ‰æ‘œƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX
-	\param[out] rectlist Še‰æ‘œ‚É‚Â‚¯‚ç‚ê‚½ƒAƒmƒe[ƒVƒ‡ƒ“‚ÌƒŠƒXƒg
-	\return “Ç‚İ‚İ‚Ì¬”Û
+	opencv_createsamles.exeï¿½Æ“ï¿½ï¿½`ï¿½ï¿½ï¿½ÌƒAï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
+	ReadCsvFile()ï¿½Öï¿½ï¿½Kï¿½{
+	\param[in] gt_file ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½
+	\param[out] imgpathlist ï¿½æ‘œï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö‚Ìƒpï¿½X
+	\param[out] rectlist ï¿½eï¿½æ‘œï¿½É‚Â‚ï¿½ï¿½ï¿½ê‚½ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½g
+	\return ï¿½Ç‚İï¿½ï¿½İ‚Ìï¿½ï¿½ï¿½
 	*/
-	bool LoadAnnotationFile(const std::string& gt_file, std::vector<std::string>& imgpathlist, std::vector<std::vector<cv::Rect>>& rectlist)
+	bool LoadAnnotationFile(const std::string gt_file, std::vector<std::string>& imgpathlist,
+			std::vector<std::vector<cv::Rect> >& rectlist)
 	{
-		std::vector<std::vector<std::string>> tokenized_strings;
+		std::vector<std::vector<std::string> > tokenized_strings;
 		std::vector<std::string> sep;
 		sep.push_back(" ");
 		if (!ReadCSVFile(gt_file, tokenized_strings, sep))
 			return false;
 
-		std::vector<std::vector<std::string>>::iterator it, it_end = tokenized_strings.end();
+		std::vector<std::vector<std::string> >::iterator it, it_end = tokenized_strings.end();
 		for (it = tokenized_strings.begin(); it != it_end; it++){
 			int num_str = it->size();
 			if (num_str < 2)
@@ -132,18 +135,21 @@ namespace util{
 	}
 
 
-	//! ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹‚Ö’Ç‹L
+	//! ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö’Ç‹L
 	/*!
-	opencv_createsamles.exe‚Æ“¯Œ`®‚ÌƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹“Ç‚İ‘‚«
-	\param[in] anno_file ƒAƒmƒe[ƒVƒ‡ƒ“ƒtƒ@ƒCƒ‹–¼
-	\param[in] img_file ‰æ‘œƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX
-	\param[int] obj_rects Še‰æ‘œ‚É‚Â‚¯‚ç‚ê‚½ƒAƒmƒe[ƒVƒ‡ƒ“‚ÌƒŠƒXƒg
-	\return •Û‘¶‚Ì¬”Û
+	opencv_createsamles.exeï¿½Æ“ï¿½ï¿½`ï¿½ï¿½ï¿½ÌƒAï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ç‚İï¿½ï¿½ï¿½
+	\param[in] anno_file ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½
+	\param[in] img_file ï¿½æ‘œï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½Ö‚Ìƒpï¿½X
+	\param[int] obj_rects ï¿½eï¿½æ‘œï¿½É‚Â‚ï¿½ï¿½ï¿½ê‚½ï¿½Aï¿½mï¿½eï¿½[ï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½Ìƒï¿½ï¿½Xï¿½g
+	\return ï¿½Û‘ï¿½ï¿½Ìï¿½ï¿½ï¿½
 	*/
-	bool AddAnnotationLine(const std::string& anno_file, const std::string& img_file, const std::vector<cv::Rect>& obj_rects, const std::string& sep)
+	bool AddAnnotationLine(const std::string anno_file, const std::string& img_file,
+			const std::vector<cv::Rect>& obj_rects,
+			const std::string& sep)
 	{
-		// o—Íƒtƒ@ƒCƒ‹‚ğŠJ‚­
-		std::ofstream ofs(anno_file, std::ios::app);
+		// ï¿½oï¿½Íƒtï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½Jï¿½ï¿½
+		ofstream ofs;
+		ofs.open(anno_file.c_str(), ofstream::out );
 		if (!ofs.is_open()){
 			return false;
 		}
@@ -158,7 +164,7 @@ namespace util{
 	}
 
 
-	// ƒfƒBƒŒƒNƒgƒŠ‚©‚ç‰æ‘œƒtƒ@ƒCƒ‹–¼ˆê——‚ğæ“¾
+	// ï¿½fï¿½Bï¿½ï¿½ï¿½Nï¿½gï¿½ï¿½ï¿½ï¿½ï¿½ï¿½æ‘œï¿½tï¿½@ï¿½Cï¿½ï¿½ï¿½ï¿½ï¿½ê——ï¿½ï¿½ï¿½æ“¾
 	bool ReadImageFilesInDirectory(const std::string& img_dir, std::vector<std::string>& image_lists)
 	{
 		using namespace boost::filesystem;
@@ -189,7 +195,8 @@ namespace util{
 	}
 
 
-	bool ReadCSVFile(const std::string& input_file, std::vector<std::vector<std::string>>& output_strings,
+	bool ReadCSVFile(const std::string input_file,
+			std::vector<std::vector<std::string> > & output_strings,
 		const std::vector<std::string>& separater_vec)
 	{
 		std::vector<std::string> sep_vec;
@@ -199,7 +206,9 @@ namespace util{
 		else{
 			sep_vec = separater_vec;
 		}
-		std::ifstream ifs(input_file);
+		ifstream ifs;
+		ifs.open(input_file.c_str(),
+						ifstream::in);
 		if (!ifs.is_open())
 			return false;
 

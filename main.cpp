@@ -44,6 +44,7 @@ DataAugmentation <annotation name> <output folder> -a <output annnotation> -c <c
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <iostream>
+#include <fstream>
 #include "Util.h"
 #include "DataAugmentation.h"
 
@@ -74,13 +75,16 @@ bool ParseCommandLine(int argc, char * argv[], std::string& conf_file,
 
 		// print help
 		if (argmap.count("help") || argc < 3){
+			std::cout << "Not enough number of arguments! " << std::endl;
 			print_help(argc, argv, opt);
 			return false;
 		}
 
 		input_anno_file = argv[1];
+		std::cout << "input: " << input_anno_file << std::endl;
 		output_folder = argv[2];
 		if (input_anno_file.find("-") == 0 || output_folder.find("-") == 0){
+			std::cout << "Wrong format for config file! " << std::endl;
 			print_help(argc, argv, opt);
 			return false;
 		}
@@ -98,7 +102,7 @@ bool ParseCommandLine(int argc, char * argv[], std::string& conf_file,
 }
 
 
-bool LoadConf(const std::string& conf_file, int& num_generate, 
+bool LoadConf(const std::string conf_file, int& num_generate,
 	double& yaw_sigma, double& pitch_sigma, double& roll_sigma,
 	double& blur_max_sigma, double& noise_max_sigma,
 	double& x_slide_sigma, double& y_slide_sigma, double& aspect_sigma)
@@ -118,13 +122,14 @@ bool LoadConf(const std::string& conf_file, int& num_generate,
 
 	variables_map argmap;
 	try{
-		std::ifstream ifs(conf_file);
+		std::ifstream ifs;
+		ifs.open(conf_file.c_str(), std::ifstream::in);
 		if (!ifs.is_open()){
 			std::string err_msg = "Fail to open config file \"" + conf_file + "\".";
-			throw std::exception(err_msg.c_str());
+			throw std::runtime_error(err_msg.c_str());
 		}
 
-		// ƒRƒ}ƒ“ƒhˆø”‚ÌŽæ“¾
+		// ï¿½Rï¿½}ï¿½ï¿½ï¿½hï¿½ï¿½ÌŽæ“¾
 		store(parse_config_file(ifs, opt), argmap);
 		notify(argmap);
 
@@ -141,7 +146,7 @@ bool LoadConf(const std::string& conf_file, int& num_generate,
 		if (num_generate < 0 || yaw_sigma < 0 || pitch_sigma < 0 || roll_sigma < 0 ||
 			blur_max_sigma < 0 || noise_max_sigma < 0 ||
 			x_slide_sigma < 0 || y_slide_sigma < 0 || aspect_sigma < 0){
-			throw std::exception("All value must NOT be negative.");
+			throw std::runtime_error("All value must NOT be negative.");
 		}
 
 		return true;
@@ -156,7 +161,8 @@ bool LoadConf(const std::string& conf_file, int& num_generate,
 }
 
 
-void GetImageFileNames(const std::string& input_name, std::vector<std::string>& img_files, std::vector<std::vector<cv::Rect>>& positions)
+void GetImageFileNames(const std::string& input_name, std::vector<std::string>& img_files,
+		std::vector<std::vector<cv::Rect> >& positions)
 {
 	using namespace boost::filesystem;
 
@@ -186,7 +192,7 @@ int main(int argc, char * argv[])
 		return -1;
 
 	std::vector<std::string> img_files;
-	std::vector<std::vector<cv::Rect>> obj_positions;
+	std::vector< std::vector<cv::Rect> > obj_positions;
 	GetImageFileNames(input_name, img_files, obj_positions);
 
 	DataAugmentation(img_files, obj_positions, output_folder, output_anno_file, num_generate, yaw_range, pitch_range, roll_range,

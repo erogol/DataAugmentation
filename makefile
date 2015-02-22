@@ -1,0 +1,2 @@
+all:
+	g++ Util.cpp RandomRotation.cpp  DataAugmentation.cpp main.cpp  -o DataAugmentation -lboost_filesystem -lboost_system -lboost_program_options -lopencv_core -lopencv_imgproc -lopencv_highgui -lopencv_ml -lopencv_video -lopencv_features2d -lopencv_calib3d -lopencv_objdetect -lopencv_contrib -lopencv_legacy -lopencv_stitching -Wall -Wextra -O3

@@ -75,7 +75,7 @@ cv::Mat ImageTransform(const cv::Mat& img, const cv::Rect& area,
 
 	// Random Rotation
 	cv::Mat dst;
-	RandomRotateImage(img, dst, yaw_sigma, pitch_sigma, roll_sigma, rect, rng);
+	RandomRotateImage(img, dst, yaw_sigma, pitch_sigma, roll_sigma, rng, rect);
 
 	// Random Noise
 	double noise_sigma = rng.uniform(0.0, noise_max_sigma);
@@ -109,7 +109,8 @@ cv::Mat ImageTransform(const cv::Mat& img, const cv::Rect& area,
 }
 
 
-void DataAugmentation(const std::vector<std::string>& img_files, const std::vector<std::vector<cv::Rect>>& areas,
+void DataAugmentation(const std::vector<std::string>& img_files,
+		const std::vector<std::vector<cv::Rect> >& areas,
 	const std::string& output_folder, const std::string& output_file,
 	int num_generate, double yaw_range, double pitch_range, double roll_range,
 	double blur_sigma, double noise_sigma, double x_slide, double y_slide, double aspect_range)
@@ -121,8 +122,12 @@ void DataAugmentation(const std::vector<std::string>& img_files, const std::vect
 	cv::RNG rng;
 	int num_img = img_files.size();
 	for (int i = 0; i < num_img; i++){
-		std::cout << "Load " << img_files[i] << std::endl;
-		cv::Mat img = cv::imread(img_files[i]);
+		boost::filesystem::path p(img_files[i]);
+		std::string img_full_path = img_files[i];
+		std::string img_file_name = p.stem().string();
+		std::string img_file_ext = p.extension().string();
+		std::cout << "Load " << img_full_path << std::endl;
+		cv::Mat img = cv::imread(img_full_path);
 		if (img.empty())
 			continue;
 
@@ -140,9 +145,15 @@ void DataAugmentation(const std::vector<std::string>& img_files, const std::vect
 			filestr << "img" << i << "_" << j;
 			
 			for (int k = 0; k < num_generate; k++){
-				cv::Mat tran_img = ImageTransform(img, trans_areas[j], yaw_range, pitch_range, roll_range, blur_sigma, noise_sigma, x_slide, y_slide, aspect_range, rng);
+				cv::Mat tran_img = ImageTransform(img, trans_areas[j], yaw_range,
+						pitch_range,
+						roll_range,
+						blur_sigma,
+						noise_sigma,
+						x_slide, y_slide,
+						aspect_range, rng);
 				std::stringstream filestr2;
-				filestr2 << filestr.str() << "_" << k << ".png";
+				filestr2 << img_file_name << "_" << k << img_file_ext;
 				path dst_file = path(output_folder) / path(filestr2.str());
 				std::string save_img_name = dst_file.string();
 
